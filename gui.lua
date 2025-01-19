@@ -35,6 +35,7 @@ local Window = Rayfield:CreateWindow({
 local Tab1 = Window:CreateTab("Guis", 4483362458) -- Title, Image
 local Tab2 = Window:CreateTab("Player", 4483362458) -- Title, Image
 local Tab3 = Window:CreateTab("Rayfield", 4483362458) -- Title, Image
+local Tab4 = Window:CreateTab("Fe", 4483362458) -- Title, Image
 local Divider = Tab1:CreateDivider()
 local Button1 = Tab3:CreateButton({
    Name = "Close",
@@ -56,7 +57,7 @@ end
    -- The function that takes place when the button is pressed
    end,
 })
-local Button5 = Tab1:CreateButton({
+local Button5 = Tab4:CreateButton({
    Name = "KJ Universal",
    Callback = function()
 loadstring(game:HttpGet("https://pastebin.com/raw/5KnPXUEm"))("Alice scripts")
@@ -96,7 +97,7 @@ local Button3 = Tab2:CreateButton({
    end,
 })
 
-local Button4 = Tab1:CreateButton({
+local Button4 = Tab4:CreateButton({
    Name = "Fe",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/Fearlocked/Nullware-Hub-V3/refs/heads/main/NullWare%20Hub%20V3"))()
