@@ -97,8 +97,9 @@ local Button3 = Tab2:CreateButton({
 })
 
 local Button4 = Tab1:CreateButton({
-		Name = "Animations"
-		Callback = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/Fearlocked/Nullware-Hub-V3/refs/heads/main/NullWare%20Hub%20V3"))()
-		end
-	})
+   Name = "Animations FE",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Fearlocked/Nullware-Hub-V3/refs/heads/main/NullWare%20Hub%20V3"))()
+   end,
+})
+
