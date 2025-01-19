@@ -56,7 +56,7 @@ end
    -- The function that takes place when the button is pressed
    end,
 })
-local Button3 = Tab1:CreateButton({
+local Button5 = Tab1:CreateButton({
    Name = "KJ Universal",
    Callback = function()
 loadstring(game:HttpGet("https://pastebin.com/raw/5KnPXUEm"))("Alice scripts")
@@ -95,3 +95,10 @@ local Button3 = Tab2:CreateButton({
    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ilya123123123gf/scripts/refs/heads/main/Noclip.lua"))()
    end,
 })
+
+local Button4 = Tab1:CreateButton({
+		Name = "Animations"
+		Callback = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Fearlocked/Nullware-Hub-V3/refs/heads/main/NullWare%20Hub%20V3"))()
+		end
+	})
