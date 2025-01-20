@@ -97,10 +97,24 @@ local Button3 = Tab2:CreateButton({
    end,
 })
 
-local Button4 = Tab4:CreateButton({
+local Button6 = Tab4:CreateButton({
    Name = "Fe",
    Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/Fearlocked/Nullware-Hub-V3/refs/heads/main/NullWare%20Hub%20V3"))()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/RENBex6969/AnimationScripts/refs/heads/main/FE_R6_Animations_Gui.lua"))()
    end,
 })
 
+local Button7 = Tab4:CreateButton({
+   Name = "096",
+   Callback = function()
+   loadstring(game:HttpGet("https://pastebin.com/raw/aTW3DfJ0"))()
+   end,
+})
+
+local Button8 = Tab4:CreateButton({
+   Name = "fe exploit gui",
+   Callback = function()
+
+loadstring(game:HttpGet("https://gist.githubusercontent.com/torikooo/54d50877a1388727ea9ca2fa07f3f593/raw/64971f032b6af3023305c57dba0810073a6d5a6b/OP%2520Finality%2520Trolling%2520GUI"))()
+   end,
+})
