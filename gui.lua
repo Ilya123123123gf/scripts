@@ -5,22 +5,22 @@ local Window = Rayfield:CreateWindow({
    LoadingTitle = "Universal Gui",
    LoadingSubtitle = "By HIKGTTY",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
-
+ 
    DisableRayfieldPrompts = false,
    DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
-
+ 
    ConfigurationSaving = {
       Enabled = true,
       FolderName = nil, -- Create a custom folder for your hub/game
       FileName = "Big Hub"
    },
-
+ 
    Discord = {
       Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
       Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
       RememberJoins = true -- Set this to false to make them join the discord every time they load it up
    },
-
+ 
    KeySystem = true, -- Set this to true to use our key system
    KeySettings = {
       Title = "hikxx key",
@@ -52,8 +52,8 @@ local Button2 = Tab1:CreateButton({
 else
     game.StarterGui:SetCore("SendNotification",  { Title = "KadeHub"; Text = "KadeHub is already executed!"; Icon = "rbxassetid://17893547380"; Duration = 15; })
 end
-
-
+ 
+ 
    -- The function that takes place when the button is pressed
    end,
 })
@@ -63,7 +63,7 @@ local Button5 = Tab4:CreateButton({
 loadstring(game:HttpGet("https://pastebin.com/raw/5KnPXUEm"))("Alice scripts")
    end,
 })
-
+ 
 local Slider = Tab2:CreateSlider({
    Name = "Walk Speed (default is 20)",
    Range = {0, 100},
@@ -76,11 +76,11 @@ local Slider = Tab2:CreateSlider({
    local Player = Players.LocalPlayer
    local Character = workspace:WaitForChild(Player.Name)
    local Humanoid = Character:FindFirstChild("Humanoid")
-   
+ 
    repeat wait() until Humanoid
-   
+ 
    local WalkSpeedValue = Value
-   
+ 
    local function ChangeWalkSpeed(Value)
 	Humanoid.WalkSpeed = Value
 	end
@@ -89,32 +89,32 @@ local Slider = Tab2:CreateSlider({
    -- The variable (Value) is a number which correlates to the value the slider is currently at
    end,
 })
-
+ 
 local Button3 = Tab2:CreateButton({
    Name = "Noclip",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/Ilya123123123gf/scripts/refs/heads/main/Noclip.lua"))()
    end,
 })
-
-local Button6 = Tab4:CreateButton({
-   Name = "Fe",
-   Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/RENBex6969/AnimationScripts/refs/heads/main/FE_R6_Animations_Gui.lua"))()
+ 
+ 
+local Slider = Tab:CreateSlider({
+   Name = "jump",
+   Range = {0, 100},
+   Increment = 10,
+   Suffix = "Jump",
+   CurrentValue = 10,
+   Flag = "Slider1",
+   Callback = function(Value1)
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value1
+  changes
+ 
    end,
 })
-
-local Button7 = Tab4:CreateButton({
-   Name = "096",
-   Callback = function()
-   loadstring(game:HttpGet("https://pastebin.com/raw/aTW3DfJ0"))()
-   end,
-})
-
-local Button8 = Tab4:CreateButton({
-   Name = "fe exploit gui",
-   Callback = function()
-
-loadstring(game:HttpGet("https://gist.githubusercontent.com/torikooo/54d50877a1388727ea9ca2fa07f3f593/raw/64971f032b6af3023305c57dba0810073a6d5a6b/OP%2520Finality%2520Trolling%2520GUI"))()
-   end,
+ 
+Rayfield:Notify({
+   Title = "Running",
+   Content = "Gui is Runnning",
+   Duration = 6.5,
+   Image = 4483362458,
 })
