@@ -12,7 +12,7 @@ After  --> getgenv().Owner = "XK5NG"
 
 ^^ --> This is just the example don't put the username here]]
 
-getgenv().Owner = "#Value#"
+getgenv().Owner = "Name"
 
 getgenv().Configuration = {
 ['Msg'] = 'Yare Yare Daze.', --When You Say [/e msg] It Makes All The Alts Say That Message
