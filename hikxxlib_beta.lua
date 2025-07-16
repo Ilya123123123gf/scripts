@@ -3,9 +3,13 @@
 -- By hikxx & ChatGPT 😎
 
 --// 💾 Auto-clean if GUI already exists
-pcall(function()
-	game.CoreGui:FindFirstChild("hikxx_UI"):Destroy()
-end)
+function lib:Close()
+	local gui = game.CoreGui:FindFirstChild("hikxx_UI")
+	if gui then
+		gui:Destroy()
+	end
+end
+
 
 --// 📦 Services
 local Players = game:GetService("Players")
