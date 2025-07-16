@@ -10,6 +10,7 @@ end)
 --// 📦 Services
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
 
 --// 👤 Locals
 local player = Players.LocalPlayer
@@ -29,9 +30,10 @@ end
 --// 🎨 Theme (you can tweak it)
 local theme = {
 	BG = Color3.fromRGB(30, 31, 35),
-	Primary = Color3.fromRGB(54, 57, 63),
+	Primary = Color3.fromRGB(43, 45, 49),
 	Accent = Color3.fromRGB(88, 101, 242),
-	Text = Color3.new(1, 1, 1)
+	Text = Color3.new(1, 1, 1),
+	MutedText = Color3.fromRGB(150, 150, 150)
 }
 
 --// 🧱 Main UI Holder
@@ -44,28 +46,94 @@ local screengui = create("ScreenGui", {
 
 local mainHolder = create("Frame", {
 	BackgroundColor3 = theme.BG,
-	Size = UDim2.new(0, 600, 0, 400),
-	Position = UDim2.new(0.5, -300, 0.5, -200),
+	Size = UDim2.new(0, 800, 0, 500),
+	Position = UDim2.new(0.5, -400, 0.5, -250),
 	AnchorPoint = Vector2.new(0.5, 0.5),
 	BorderSizePixel = 0,
-	Parent = screengui
+	Parent = screengui,
+	Name = "MainHolder"
 })
 
-create("UICorner", {CornerRadius = UDim.new(0, 12), Parent = mainHolder})
-create("UIStroke", {Color = theme.Accent, Thickness = 2, Parent = mainHolder})
+create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = mainHolder})
+create("UIStroke", {Color = Color3.fromRGB(20, 20, 20), Thickness = 1, Parent = mainHolder})
 
---// 🌀 Server list on left
-local serverList = create("Frame", {
-	Size = UDim2.new(0, 60, 1, 0),
+--// 🪟 Window Bar (Discord-style)
+local topBar = create("Frame", {
+	Size = UDim2.new(1, 0, 0, 30),
 	BackgroundColor3 = theme.Primary,
 	BorderSizePixel = 0,
 	Parent = mainHolder
 })
 
---// ⛓️ Tabs inside server
+create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = topBar})
+
+local title = create("TextLabel", {
+	Text = "hikxx UI",
+	Font = Enum.Font.GothamBold,
+	TextColor3 = theme.Text,
+	TextSize = 16,
+	BackgroundTransparency = 1,
+	Size = UDim2.new(1, -90, 1, 0),
+	Position = UDim2.new(0, 10, 0, 0),
+	TextXAlignment = Enum.TextXAlignment.Left,
+	Parent = topBar
+})
+
+--// 🟥 Close 🟨 Min 🟩 Full
+local function createTopBtn(color, pos, callback)
+	local btn = create("TextButton", {
+		Size = UDim2.new(0, 20, 0, 20),
+		Position = pos,
+		BackgroundColor3 = color,
+		Text = "",
+		Parent = topBar
+	})
+	create("UICorner", {CornerRadius = UDim.new(1, 0), Parent = btn})
+	btn.MouseButton1Click:Connect(callback)
+end
+
+createTopBtn(Color3.fromRGB(237, 66, 69), UDim2.new(1, -30, 0.5, -10), function() mainHolder:Destroy() end)
+createTopBtn(Color3.fromRGB(255, 204, 0), UDim2.new(1, -55, 0.5, -10), function() mainHolder.Visible = false end)
+createTopBtn(Color3.fromRGB(0, 202, 78), UDim2.new(1, -80, 0.5, -10), function()
+	mainHolder.Size = UDim2.new(0, 800, 0, 500)
+end)
+
+--// 🖱️ Dragging
+local dragging, dragStart, startPos = false, nil, nil
+
+topBar.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = mainHolder.Position
+	end
+end)\n
+topBar.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		local delta = input.Position - dragStart
+		mainHolder.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+end)
+
+--// 🔘 Server list
+local serverList = create("Frame", {
+	Size = UDim2.new(0, 60, 1, -30),
+	Position = UDim2.new(0, 0, 0, 30),
+	BackgroundColor3 = theme.Primary,
+	BorderSizePixel = 0,
+	Parent = mainHolder
+})
+
+--// 📁 Tabs inside server
 local tabHolder = create("Frame", {
-	Position = UDim2.new(0, 60, 0, 0),
-	Size = UDim2.new(1, -60, 1, 0),
+	Position = UDim2.new(0, 60, 0, 30),
+	Size = UDim2.new(1, -60, 1, -30),
 	BackgroundColor3 = theme.BG,
 	BorderSizePixel = 0,
 	Parent = mainHolder
@@ -82,7 +150,6 @@ function lib:CreateServer(name, icon)
 		BackgroundColor3 = theme.Primary,
 		Parent = serverList
 	})
-
 	create("UICorner", {CornerRadius = UDim.new(1, 0), Parent = serverBtn})
 
 	local serverFrame = create("Frame", {
@@ -90,12 +157,6 @@ function lib:CreateServer(name, icon)
 		BackgroundTransparency = 1,
 		Visible = false,
 		Parent = tabHolder
-	})
-
-	local tabLayout = create("UIListLayout", {
-		SortOrder = Enum.SortOrder.LayoutOrder,
-		Padding = UDim.new(0, 8),
-		Parent = serverFrame
 	})
 
 	serverBtn.MouseButton1Click:Connect(function()
@@ -106,63 +167,82 @@ function lib:CreateServer(name, icon)
 	end)
 
 	local serverObj = {}
-	function serverObj:CreateTab(tabname)
-		local tabBtn = create("TextLabel", {
-			Size = UDim2.new(1, 0, 0, 30),
-			Text = tabname,
-			TextColor3 = theme.Text,
-			Font = Enum.Font.Gotham,
+
+	function serverObj:CreateCategory(catName)
+		local catLabel = create("TextLabel", {
+			Text = catName,
+			Font = Enum.Font.GothamBold,
 			TextSize = 14,
-			BackgroundColor3 = theme.Primary,
-			Parent = serverFrame
-		})
-		
-		local content = create("Frame", {
-			Size = UDim2.new(1, 0, 1, -30),
-			Position = UDim2.new(0, 0, 0, 30),
+			TextColor3 = theme.MutedText,
 			BackgroundTransparency = 1,
-			Visible = true,
+			Size = UDim2.new(1, -10, 0, 25),
+			TextXAlignment = Enum.TextXAlignment.Left,
+			Position = UDim2.new(0, 5, 0, #serverFrame:GetChildren() * 30),
 			Parent = serverFrame
 		})
 
-		local tabApi = {}
-
-		function tabApi:CreateLabel(text)
-			create("TextLabel", {
-				Text = text,
-				Size = UDim2.new(1, 0, 0, 20),
-				BackgroundTransparency = 1,
+		local category = {}
+		function category:CreateTab(tabname)
+			local tabBtn = create("TextButton", {
+				Size = UDim2.new(1, -20, 0, 28),
+				Position = UDim2.new(0, 10, 0, #serverFrame:GetChildren() * 30),
+				Text = "# " .. tabname,
 				TextColor3 = theme.Text,
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
-				Parent = content
+				BackgroundColor3 = theme.Primary,
+				Parent = serverFrame
 			})
-		end
+			create("UICorner", {CornerRadius = UDim.new(0, 6), Parent = tabBtn})
 
-		function tabApi:CreateButton(name, callback)
-			local btn = create("TextButton", {
-				Text = name,
-				Size = UDim2.new(1, 0, 0, 30),
-				BackgroundColor3 = theme.Accent,
-				TextColor3 = Color3.new(1,1,1),
-				Font = Enum.Font.GothamBold,
-				TextSize = 14,
-				Parent = content
+			local content = create("Frame", {
+				Size = UDim2.new(1, 0, 1, 0),
+				BackgroundTransparency = 1,
+				Visible = false,
+				Parent = tabHolder
 			})
-			create("UICorner", {Parent = btn})
-			btn.MouseButton1Click:Connect(callback)
-		end
 
-		function tabApi:CreateColorpicker(name, default, callback)
-			-- placeholder: implement full picker later
-			tabApi:CreateButton(name.." (Colorpicker stub)", function()
-				callback(default or Color3.new(1, 0, 0))
+			tabBtn.MouseButton1Click:Connect(function()
+				for _, f in pairs(tabHolder:GetChildren()) do
+					if f:IsA("Frame") then f.Visible = false end
+				end
+				content.Visible = true
 			end)
+
+			local tabApi = {}
+			tabApi.CreateLabel = function(text)
+				create("TextLabel", {
+					Text = text,
+					Size = UDim2.new(1, -20, 0, 20),
+					Position = UDim2.new(0, 10, 0, 0),
+					BackgroundTransparency = 1,
+					TextColor3 = theme.Text,
+					Font = Enum.Font.Gotham,
+					TextSize = 14,
+					TextXAlignment = Enum.TextXAlignment.Left,
+					Parent = content
+				})
+			end
+
+			tabApi.CreateButton = function(name, callback)
+				local btn = create("TextButton", {
+					Text = name,
+					Size = UDim2.new(1, -20, 0, 30),
+					Position = UDim2.new(0, 10, 0, 30),
+					BackgroundColor3 = theme.Accent,
+					TextColor3 = Color3.new(1,1,1),
+					Font = Enum.Font.GothamBold,
+					TextSize = 14,
+					Parent = content
+				})
+				create("UICorner", {Parent = btn})
+				btn.MouseButton1Click:Connect(callback)
+			end
+
+			return tabApi
 		end
 
-		-- Add more elements: Toggle, Slider, Textbox, etc
-
-		return tabApi
+		return category
 	end
 
 	return serverObj
