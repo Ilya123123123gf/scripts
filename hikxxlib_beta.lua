@@ -3,8 +3,11 @@
 -- By hikxx & ChatGPT 😎
 
 pcall(function()
-	game.CoreGui:FindFirstChild("hikxx_UI"):Destroy()
+	if game:FindFirstChild("CoreGui") then
+		game.CoreGui:FindFirstChild("hikxx_UI"):Destroy()
+	end
 end)
+
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
