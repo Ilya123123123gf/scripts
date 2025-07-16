@@ -227,4 +227,13 @@ function lib:CreateServer(name, icon)
 	return serverObj
 end
 
+function lib:BindToggle(toggleKey)
+	local keybind = toggleKey or Enum.KeyCode.RightControl
+	UserInputService.InputBegan:Connect(function(input, gameProcessed)
+		if not gameProcessed and input.KeyCode == keybind then
+			mainHolder.Visible = not mainHolder.Visible
+		end
+	end)
+end
+
 return lib
