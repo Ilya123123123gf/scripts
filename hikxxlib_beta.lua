@@ -2,32 +2,28 @@
 -- Discord-style Roblox UI Lib (loadstring compatible)
 -- By hikxx & ChatGPT 😎
 
---// 💾 Auto-clean if GUI already exists
 pcall(function()
 	game.CoreGui:FindFirstChild("hikxx_UI"):Destroy()
 end)
 
---// 📦 Services
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
---// 👤 Locals
 local player = Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
 local humanoid = char:WaitForChild("Humanoid")
 
---// 🌐 Lib table
 local lib = { player = player, char = char, humanoid = humanoid }
 
---// 💠 UI Utility
-local function create(instance, props)
-	local obj = Instance.new(instance)
-	for k,v in pairs(props or {}) do obj[k] = v end
-	return obj
+local function create(class, props)
+	local inst = Instance.new(class)
+	for k, v in pairs(props) do
+		inst[k] = v
+	end
+	return inst
 end
 
---// 🎨 Theme
 local theme = {
 	BG = Color3.fromRGB(30, 31, 35),
 	Primary = Color3.fromRGB(43, 45, 49),
@@ -36,7 +32,6 @@ local theme = {
 	MutedText = Color3.fromRGB(150, 150, 150)
 }
 
---// 🧱 Main UI Holder
 local screengui = create("ScreenGui", {
 	Name = "hikxx_UI",
 	ResetOnSpawn = false,
@@ -57,7 +52,6 @@ local mainHolder = create("Frame", {
 create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = mainHolder})
 create("UIStroke", {Color = Color3.fromRGB(20, 20, 20), Thickness = 1, Parent = mainHolder})
 
---// 🪟 Window Bar
 local topBar = create("Frame", {
 	Size = UDim2.new(1, 0, 0, 30),
 	BackgroundColor3 = theme.Primary,
@@ -66,7 +60,7 @@ local topBar = create("Frame", {
 })
 create("UICorner", {CornerRadius = UDim.new(0, 8), Parent = topBar})
 
-local title = create("TextLabel", {
+create("TextLabel", {
 	Text = "hikxx UI",
 	Font = Enum.Font.GothamBold,
 	TextColor3 = theme.Text,
@@ -96,8 +90,7 @@ createTopBtn(Color3.fromRGB(0, 202, 78), UDim2.new(1, -80, 0.5, -10), function()
 	mainHolder.Size = UDim2.new(0, 800, 0, 500)
 end)
 
---// 🖱️ Dragging
-local dragging, dragStart, startPos = false, nil, nil
+local dragging, dragStart, startPos = false
 topBar.InputBegan:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 then
 		dragging = true
@@ -117,7 +110,6 @@ UserInputService.InputChanged:Connect(function(input)
 	end
 end)
 
---// 🔘 Server list
 local serverList = create("Frame", {
 	Size = UDim2.new(0, 60, 1, -30),
 	Position = UDim2.new(0, 0, 0, 30),
@@ -126,7 +118,6 @@ local serverList = create("Frame", {
 	Parent = mainHolder
 })
 
---// 📁 Tabs inside server
 local tabHolder = create("Frame", {
 	Position = UDim2.new(0, 60, 0, 30),
 	Size = UDim2.new(1, -60, 1, -30),
@@ -135,11 +126,10 @@ local tabHolder = create("Frame", {
 	Parent = mainHolder
 })
 
---// 🌍 API
 function lib:CreateServer(name, icon)
 	local serverBtn = create("TextButton", {
 		Size = UDim2.new(1, 0, 0, 60),
-		Text = icon or name:sub(1,1),
+		Text = icon,
 		TextColor3 = theme.Text,
 		Font = Enum.Font.GothamBold,
 		TextSize = 24,
@@ -203,7 +193,7 @@ function lib:CreateServer(name, icon)
 
 		local tabApi = {}
 		tabApi.CreateLabel = function(text)
-			local lbl = create("TextLabel", {
+			create("TextLabel", {
 				Text = text,
 				Size = UDim2.new(1, -20, 0, 20),
 				BackgroundTransparency = 1,
@@ -220,7 +210,7 @@ function lib:CreateServer(name, icon)
 				Text = name,
 				Size = UDim2.new(1, -20, 0, 30),
 				BackgroundColor3 = theme.Accent,
-				TextColor3 = Color3.new(1,1,1),
+				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.GothamBold,
 				TextSize = 14,
 				Parent = content
