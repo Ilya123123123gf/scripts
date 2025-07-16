@@ -2,15 +2,6 @@
 -- Discord-style Roblox UI Lib (loadstring compatible)
 -- By hikxx & ChatGPT 😎
 
---// 💾 Auto-clean if GUI already exists
-function lib:Close()
-	local gui = game.CoreGui:FindFirstChild("hikxx_UI")
-	if gui then
-		gui:Destroy()
-	end
-end
-
-
 --// 📦 Services
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
@@ -96,10 +87,11 @@ local function createTopBtn(color, pos, callback)
 	btn.MouseButton1Click:Connect(callback)
 end
 
-createTopBtn(Color3.fromRGB(237, 66, 69), UDim2.new(1, -30, 0.5, -10), function() mainHolder:Destroy() end)
+createTopBtn(Color3.fromRGB(237, 66, 69), UDim2.new(1, -30, 0.5, -10), function() lib:Close() end)
 createTopBtn(Color3.fromRGB(255, 204, 0), UDim2.new(1, -55, 0.5, -10), function() mainHolder.Visible = false end)
 createTopBtn(Color3.fromRGB(0, 202, 78), UDim2.new(1, -80, 0.5, -10), function()
 	mainHolder.Size = UDim2.new(0, 800, 0, 500)
+	mainHolder.Visible = true
 end)
 
 --// 🖱️ Dragging
@@ -111,7 +103,8 @@ topBar.InputBegan:Connect(function(input)
 		dragStart = input.Position
 		startPos = mainHolder.Position
 	end
-end)\n
+end)
+
 topBar.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 then
 		dragging = false
@@ -214,7 +207,7 @@ function lib:CreateServer(name, icon)
 			end)
 
 			local tabApi = {}
-			tabApi.CreateLabel = function(text)
+			function tabApi.CreateLabel(text)
 				create("TextLabel", {
 					Text = text,
 					Size = UDim2.new(1, -20, 0, 20),
@@ -228,7 +221,7 @@ function lib:CreateServer(name, icon)
 				})
 			end
 
-			tabApi.CreateButton = function(name, callback)
+			function tabApi.CreateButton(name, callback)
 				local btn = create("TextButton", {
 					Text = name,
 					Size = UDim2.new(1, -20, 0, 30),
@@ -250,6 +243,23 @@ function lib:CreateServer(name, icon)
 	end
 
 	return serverObj
+end
+
+-- Clean method to remove nil values from lib table
+function lib:Clean()
+	for k, v in pairs(self) do
+		if v == nil then
+			self[k] = nil
+		end
+	end
+end
+
+-- Close method to destroy the UI
+function lib:Close()
+	local gui = game.CoreGui:FindFirstChild("hikxx_UI")
+	if gui then
+		gui:Destroy()
+	end
 end
 
 return lib
